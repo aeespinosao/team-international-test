@@ -9,6 +9,7 @@ packages = [{include = "technical_test"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
 
 
 [build-system]
