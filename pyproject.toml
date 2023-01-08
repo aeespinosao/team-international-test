@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "technical-test"
+version = "0.1.0"
+description = ""
+authors = ["Andres Espinosa <andreseespinosao@gmail.com>"]
+readme = "README.md"
+packages = [{include = "technical_test"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^7.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
