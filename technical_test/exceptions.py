@@ -11,5 +11,5 @@ class NegativeValueException(Exception):
 class NoValuesException(Exception):
     pass
 
-class StatsNotFound(Exception):
+class StatsNotFoundException(Exception):
     pass

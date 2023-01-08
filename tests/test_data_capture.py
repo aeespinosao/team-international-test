@@ -1,6 +1,6 @@
 from pytest import raises
 from technical_test import (DataCapture, OutOfRangeException, InvalidTypeException,
-                            NegativeValueException, NoValuesException, StatsNotFound)
+                            NegativeValueException, NoValuesException, StatsNotFoundException)
 
 
 class TestDataCaptureAdd:
@@ -139,7 +139,7 @@ class TestDataCaptureLess:
     def test_less_build_stats_no_executed_raise_stats_not_found_exception(self):
         capture = DataCapture()
 
-        with raises(StatsNotFound):
+        with raises(StatsNotFoundException):
             capture.less(9)
 
     def test_less_negative_number_raise_negative_value_exception(self):
@@ -157,6 +157,17 @@ class TestDataCaptureLess:
 
         with raises(InvalidTypeException):
             stats.less(178.2)
+            
+    def test_less_out_of_range_number_raise_out_of_range_exception(self):
+        capture = DataCapture()
+        capture.add(47)
+        stats = capture.build_stats()
+
+        with raises(OutOfRangeException):
+            stats.less(1001)
+            
+        with raises(OutOfRangeException):
+            stats.less(0)
 
     def test_less_single_correct_values(self):
         capture = DataCapture()
@@ -236,7 +247,6 @@ class TestDataCaptureLess:
         assert stats.less(70) == 10
         assert stats.less(71) == 13
         assert stats.less(1000) == 13
-        assert stats.less(1001) == 15
 
 
 class TestDataCaptureGreater:
@@ -244,7 +254,7 @@ class TestDataCaptureGreater:
     def test_greater_build_stats_no_executed_raise_stats_not_found_exception(self):
         capture = DataCapture()
 
-        with raises(StatsNotFound):
+        with raises(StatsNotFoundException):
             capture.greater(9)
 
     def test_greater_negative_number_raise_negative_value_exception(self):
@@ -262,6 +272,17 @@ class TestDataCaptureGreater:
 
         with raises(InvalidTypeException):
             stats.greater(1.1)
+            
+    def test_greater_out_of_range_number_raise_out_of_range_exception(self):
+        capture = DataCapture()
+        capture.add(47)
+        stats = capture.build_stats()
+
+        with raises(OutOfRangeException):
+            stats.greater(1001)
+            
+        with raises(OutOfRangeException):
+            stats.greater(0)
 
     def test_greater_single_correct_values(self):
         capture = DataCapture()
@@ -272,7 +293,6 @@ class TestDataCaptureGreater:
         capture.add(6)
         stats = capture.build_stats()
 
-        assert stats.greater(0) == 5
         assert stats.greater(2) == 5
         assert stats.greater(3) == 4
         assert stats.greater(4) == 3
@@ -300,7 +320,6 @@ class TestDataCaptureGreater:
         capture.add(6)
         stats = capture.build_stats()
 
-        assert stats.greater(0) == 12
         assert stats.greater(2) == 12
         assert stats.greater(3) == 11
         assert stats.greater(4) == 7
@@ -331,7 +350,6 @@ class TestDataCaptureGreater:
         capture.add(1000)
         stats = capture.build_stats()
 
-        assert stats.greater(0) == 15
         assert stats.greater(1) == 14
         assert stats.greater(2) == 14
         assert stats.greater(3) == 13
@@ -351,7 +369,7 @@ class TestDataCaptureBetween:
     def test_between_build_stats_no_executed_raise_stats_not_found_exception(self):
         capture = DataCapture()
 
-        with raises(StatsNotFound):
+        with raises(StatsNotFoundException):
             capture.between(9, 56)
 
     def test_between_negative_number_raise_negative_value_exception(self):
@@ -381,6 +399,20 @@ class TestDataCaptureBetween:
 
         with raises(InvalidTypeException):
             stats.between(1.50, 198.2)
+            
+    def test_between_out_of_range_number_raise_out_of_range_exception(self):
+        capture = DataCapture()
+        capture.add(47)
+        stats = capture.build_stats()
+
+        with raises(OutOfRangeException):
+            stats.greater(10, 1001)
+            
+        with raises(OutOfRangeException):
+            stats.greater(0, 70)
+            
+        with raises(OutOfRangeException):
+            stats.greater(0,1001)
 
     def test_between_single_correct_values(self):
         capture = DataCapture()
@@ -392,9 +424,10 @@ class TestDataCaptureBetween:
         stats = capture.build_stats()
 
         assert stats.between(1, 4) == 2
+        assert stats.between(4, 1) == 2
         assert stats.between(5, 10) == 2
         assert stats.between(9, 71) == 2
-        assert stats.between(70, 1000) == 2
+        assert stats.between(70, 1000) == 1
         assert stats.between(1, 1000) == 5
 
     def test_between_duplicated_correct_values(self):
