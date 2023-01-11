@@ -4,14 +4,12 @@ from .constants import LOWER_RANGE_LIMIT, UPPER_RANGE_LIMIT
 
 class DataCapture():
     """
-    DataCapture class provide a way to compute some statistics required for some numbers
+    DataCapture class provide a way to store some numbers for future statistics
     """
     
     def __init__(self) -> None:
         self.numbers_count = {i:0 for i in range(LOWER_RANGE_LIMIT, UPPER_RANGE_LIMIT + 1)}
-        self.numbers_stats = {i:0 for i in range(LOWER_RANGE_LIMIT, UPPER_RANGE_LIMIT + 1)}
         self.has_numbers = False
-        self.has_stats = False
         self.total_numbers = 0
     
     @type_validation
@@ -28,8 +26,24 @@ class DataCapture():
         self.numbers_count[value] += 1
         self.has_numbers = True
         self.total_numbers += 1
-    
+        
     @has_values_validation
+    def build_stats(self) -> DataStats:
+        return DataStats(self.numbers_count, self.total_numbers)
+
+
+class DataStats:
+    """
+    DataStats class provide a way to compute some statistics required for some numbers
+    """
+    
+    def __init__(self, numbers_count: dict, total_numbers: int) -> None:
+        self.numbers_count = numbers_count
+        self.total_numbers = total_numbers
+        self.numbers_stats = {i:0 for i in range(LOWER_RANGE_LIMIT, UPPER_RANGE_LIMIT + 1)}
+        self.has_stats = False
+        self.build_stats()
+    
     def build_stats(self) -> DataCapture:
         """
         Compute the statistics based on the added values

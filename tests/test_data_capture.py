@@ -1,6 +1,6 @@
 from pytest import raises
-from technical_test import (DataCapture, OutOfRangeException, InvalidTypeException,
-                            NegativeValueException, NoValuesException, StatsNotFoundException)
+from technical_test import (DataCapture, DataStats, OutOfRangeException, InvalidTypeException,
+                            NegativeValueException, NoValuesException)
 
 
 class TestDataCaptureAdd:
@@ -93,7 +93,7 @@ class TestDataCaptureBuildStats:
     def test_build_stats_return_data_capture_instance(self):
         capture = DataCapture()
         capture.add(15)
-        assert isinstance(capture.build_stats(), DataCapture)
+        assert isinstance(capture.build_stats(), DataStats)
 
     def test_build_stats_single_valid_values(self):
         capture = DataCapture()
@@ -135,12 +135,6 @@ class TestDataCaptureBuildStats:
 
 
 class TestDataCaptureLess:
-
-    def test_less_build_stats_no_executed_raise_stats_not_found_exception(self):
-        capture = DataCapture()
-
-        with raises(StatsNotFoundException):
-            capture.less(9)
 
     def test_less_negative_number_raise_negative_value_exception(self):
         capture = DataCapture()
@@ -251,12 +245,6 @@ class TestDataCaptureLess:
 
 class TestDataCaptureGreater:
 
-    def test_greater_build_stats_no_executed_raise_stats_not_found_exception(self):
-        capture = DataCapture()
-
-        with raises(StatsNotFoundException):
-            capture.greater(9)
-
     def test_greater_negative_number_raise_negative_value_exception(self):
         capture = DataCapture()
         capture.add(47)
@@ -365,12 +353,6 @@ class TestDataCaptureGreater:
 
 
 class TestDataCaptureBetween:
-
-    def test_between_build_stats_no_executed_raise_stats_not_found_exception(self):
-        capture = DataCapture()
-
-        with raises(StatsNotFoundException):
-            capture.between(9, 56)
 
     def test_between_negative_number_raise_negative_value_exception(self):
         capture = DataCapture()
