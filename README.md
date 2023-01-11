@@ -1,5 +1,15 @@
 # Team international test
 
+## Context
+Create a program that computes some basic statistics on a collection of small positive integers. You can assume all values will be less than 1,000.
+
+## Restriction
+- You cannot import a library that solves it instantly.
+- The methods add(), less(), greater(), and between() should have constant time O(1).
+- The method build_stats() can be at most linear O(n).
+- Apply the best practices you know.
+- Share a public repo with your project.
+
 ## Instalation
 
 ### Dependencies
